@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gailtrack/widgets/camera.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -12,10 +13,12 @@ void main() async {
   // Initialize Supabase
   try {
     await Supabase.initialize(
-        url: 'https://oounmycsyfuqvzagiadh.supabase.co',  // e.g., 'https://xyzproject.supabase.co'
-        anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdW5teWNzeWZ1cXZ6YWdpYWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI0NjAzMTUsImV4cCI6MjA0ODAzNjMxNX0.cqxVFYCn7youkcsCvvIMVo4hD_HzUlgPoEEJCfckz-c',
-        debug: true  // Enable debug mode to see more logs
-    );
+        url:
+            'https://oounmycsyfuqvzagiadh.supabase.co', // e.g., 'https://xyzproject.supabase.co'
+        anonKey:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdW5teWNzeWZ1cXZ6YWdpYWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI0NjAzMTUsImV4cCI6MjA0ODAzNjMxNX0.cqxVFYCn7youkcsCvvIMVo4hD_HzUlgPoEEJCfckz-c',
+        debug: true // Enable debug mode to see more logs
+        );
     print('Supabase initialized successfully');
   } catch (e) {
     print('Error initializing Supabase: $e');
@@ -45,7 +48,8 @@ class LocationTrackerHome extends StatefulWidget {
 }
 
 class _LocationTrackerHomeState extends State<LocationTrackerHome> {
-  final LocationTrackingService _trackingService = Get.put(LocationTrackingService());
+  final LocationTrackingService _trackingService =
+      Get.put(LocationTrackingService());
 
   @override
   void initState() {
@@ -59,6 +63,7 @@ class _LocationTrackerHomeState extends State<LocationTrackerHome> {
       Permission.location,
       Permission.locationAlways,
       Permission.notification,
+      Permission.camera
     ].request();
   }
 
@@ -86,6 +91,7 @@ class _LocationTrackerHomeState extends State<LocationTrackerHome> {
               _buildActionButtons(),
               const SizedBox(height: 20),
               _buildInfoCard(),
+              const SmallCameraView()
             ],
           ),
         ),
@@ -165,8 +171,12 @@ class _LocationTrackerHomeState extends State<LocationTrackerHome> {
                 const SizedBox(height: 12),
                 _buildStatRow('Total Locations', counts['total'] ?? 0),
                 _buildStatRow('Synced', counts['synced'] ?? 0, Colors.green),
-                _buildStatRow('Pending Sync', counts['unsynced'] ?? 0,
-                    (counts['unsynced'] ?? 0) > 0 ? Colors.orange : Colors.green),
+                _buildStatRow(
+                    'Pending Sync',
+                    counts['unsynced'] ?? 0,
+                    (counts['unsynced'] ?? 0) > 0
+                        ? Colors.orange
+                        : Colors.green),
               ],
             ),
           ),
@@ -216,17 +226,19 @@ class _LocationTrackerHomeState extends State<LocationTrackerHome> {
                   return ElevatedButton.icon(
                     onPressed: isConnected
                         ? () async {
-                      final result = await _trackingService.forceSyncNow();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(result
-                              ? 'Sync completed successfully'
-                              : 'Sync failed'),
-                          backgroundColor: result ? Colors.green : Colors.red,
-                        ),
-                      );
-                      setState(() {});
-                    }
+                            final result =
+                                await _trackingService.forceSyncNow();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(result
+                                    ? 'Sync completed successfully'
+                                    : 'Sync failed'),
+                                backgroundColor:
+                                    result ? Colors.green : Colors.red,
+                              ),
+                            );
+                            setState(() {});
+                          }
                         : null,
                     icon: const Icon(Icons.sync),
                     label: const Text('Force Sync'),

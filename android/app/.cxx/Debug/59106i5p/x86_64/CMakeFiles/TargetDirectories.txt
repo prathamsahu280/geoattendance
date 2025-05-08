@@ -1,0 +1,2 @@
+/Users/rajasingh/coding/projects/geoattendance/android/app/.cxx/Debug/59106i5p/x86_64/CMakeFiles/edit_cache.dir
+/Users/rajasingh/coding/projects/geoattendance/android/app/.cxx/Debug/59106i5p/x86_64/CMakeFiles/rebuild_cache.dir

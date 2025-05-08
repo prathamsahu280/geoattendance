@@ -56,7 +56,8 @@ dependencies:
   socket_io_client: ^3.0.2
   latlong2: ^0.9.1
   supabase_flutter: ^2.8.4
-  permission_handler: ^11.4.0
+  permission_handler: ^12.0.0+1
+  camera: ^0.11.1
   
 
 
